@@ -16,21 +16,38 @@
 
 const express = require('express');
 const bodyparser = require('body-parser');
+const rp = require('request-promise');
+
 const PORT = process.env.PORT || 9000;
+const URI = process.env.GCHAT_URL
+  || "https://chat.googleapis.com/v1/spaces/AAAAjKt8bNE/"
+  + "messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&"
+  + "token=p79tIUVyoFLb1RcdW_3P3KvF3l451_G96YtGQWSXdU8%3D";
 
 const app = express()
     .use(bodyparser.urlencoded({extended: false}))
     .use(bodyparser.json());
 
-app.post('/', (req, res) => {
+app.post('/', async (req, res) => {
   let text = '';
   if (req.headers['x-github-event'] && req.headers['x-github-event'] === 'ping') {
     text = `Github webhook created on repo ${req.body.repository.full_name}`;
-  } else if (req.headers.x-github-event && req.headers.x-github-event === 'push') {
-    text = `New push on repo ${req.body.repository.full_name} 
-      by *${req.body.pusher.name}*`;
+  } else if (req.headers['x-github-event'] && req.headers['x-github-event'] === 'push') {
+    text = `New push on repo ${req.body.repository.full_name} by *${req.body.pusher.name}*`;
+  } else {
+    return res.send('Action not performed');
   }
-  return res.json({text});
+  try {
+    gChatResponse = await rp({
+      uri: URI,
+      method: 'post',
+      json: true,
+      body: { text },
+    });
+    return res.json({ gChatResponse });
+  } catch (error) {
+    return res.send(error);
+  }
 });
 
 app.listen(PORT, () => {
