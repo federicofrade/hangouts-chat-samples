@@ -1,7 +1,7 @@
 {
-  "name": "basic-bot",
+  "name": "git-gchat-webhooks-bot",
   "version": "1.0.0",
-  "description": "This is a basic bot to interact with Hangouts Chat",
+  "description": "This is a basic bot to interact with Git and Hangouts Chat",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -9,19 +9,14 @@
   },
   "contributors": [
     {
-      "name": "Barathwaja S",
-      "email": "sbarathwaj4@gmail.com",
-      "url": "https://github.com/Barathwaja"
-    },
-    {
-      "name": "Ashok V",
-      "email": "ash.srinivasan94@gmail.com",
-      "url": "https://github.com/ashoksrinivas"
+      "name": "Federico Frade",
+      "email": "federico.frade4@mercadolibre.com",
+      "url": "https://github.com/federicofrade"
     }
   ],
   "dependencies": {
-    "body-parser": "^1.18.2",
-    "express": "^4.16.2"
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4"
   },
   "license": "Apache-2.0"
 }

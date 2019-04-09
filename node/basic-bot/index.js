@@ -24,16 +24,11 @@ const app = express()
 
 app.post('/', (req, res) => {
   let text = '';
-  // Case 1: When BOT was added to the ROOM
-  if (req.body.type === 'ADDED_TO_SPACE' && req.body.space.type === 'ROOM') {
-    text = `Thanks for adding me to ${req.body.space.displayName}`;
-  // Case 2: When BOT was added to a DM
-  } else if (req.body.type === 'ADDED_TO_SPACE'
-      && req.body.space.type === 'DM') {
-    text = `Thanks for adding me to a DM, ${req.body.user.displayName}`;
-  // Case 3: Texting the BOT
-  } else if (req.body.type === 'MESSAGE') {
-    text = `Your message : ${req.body.message.text}`;
+  if (req.headers['x-github-event'] && req.headers['x-github-event'] === 'ping') {
+    text = `Github webhook created on repo ${req.body.repository.full_name}`;
+  } else if (req.headers.x-github-event && req.headers.x-github-event === 'push') {
+    text = `New push on repo ${req.body.repository.full_name} 
+      by *${req.body.pusher.name}*`;
   }
   return res.json({text});
 });
